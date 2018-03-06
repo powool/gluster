@@ -1,0 +1,38 @@
+gluster volume set dockerstore performance.write-behind off
+gluster volume set dockerstore performance.read-ahead off
+gluster volume set dockerstore performance.readdir-ahead off
+gluster volume set dockerstore performance.parallel-readdir off
+gluster volume set dockerstore performance.quick-read off
+gluster volume set dockerstore performance.stat-prefetch off
+gluster volume set dockerstore performance.io-cache off
+
+
+glusterfs --dump-fuse=/tmp/fuse_dump.txt --volfile-id=dockerstore --volfile-server=172.18.0.2 /mnt
+
+
+working:
+
+Volume Name: dockerstore
+Type: Replicate
+Volume ID: e794ca15-cf68-4d93-a8c7-3a4e0409613b
+Status: Started
+Snapshot Count: 0
+Number of Bricks: 1 x 3 = 3
+Transport-type: tcp
+Bricks:
+Brick1: 172.18.0.4:/data/glusterfs/store/dockerstore
+Brick2: 172.18.0.3:/data/glusterfs/store/dockerstore
+Brick3: 172.18.0.2:/data/glusterfs/store/dockerstore
+Options Reconfigured:
+performance.readdir-ahead: off
+performance.io-cache: off
+performance.stat-prefetch: off
+performance.quick-read: off
+performance.parallel-readdir: off
+performance.read-ahead: off
+performance.write-behind: off
+performance.flush-behind: off
+transport.address-family: inet
+nfs.disable: on
+performance.client-io-threads: off
+

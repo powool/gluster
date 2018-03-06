@@ -1,0 +1,61 @@
+version: '3.3'
+
+networks:
+  netgluster:
+    driver: bridge
+
+services:
+    node-1:
+        hostname: node-1
+        image: gluster/gluster-centos
+        restart: always
+        tty: true
+        privileged: true
+        ports:
+        - 24007
+        - 24008
+        - 49152
+        volumes:
+          - /data/docker/gluster-node1/store:/data/glusterfs/store/
+          - /data/docker/gluster-node1/state:/var/lib/glusterd
+        depends_on:
+          - node-2
+          - node-3
+        networks:
+              - netgluster
+
+    node-2:
+        hostname: node-2
+        image: gluster/gluster-centos
+        restart: always
+        tty: true
+        privileged: true
+        ports:
+        - 24007
+        - 24008
+        - 49152
+        volumes:
+          - /data/docker/gluster-node2/store:/data/glusterfs/store/
+          - /data/docker/gluster-node2/state:/var/lib/glusterd
+        depends_on:
+          - node-3
+        networks:
+              - netgluster
+
+    node-3:
+        hostname: node-3
+        image: gluster/gluster-centos
+        restart: always
+        tty: true
+        privileged: true
+        ports:
+        - 24007
+        - 24008
+        - 49152
+        volumes:
+          - /data/docker/gluster-node3/store:/data/glusterfs/store/
+          - /data/docker/gluster-node3/state:/var/lib/glusterd
+        networks:
+              - netgluster
+
+

@@ -1,0 +1,37 @@
+volume remote1
+  type protocol/client
+  option transport-type tcp
+  option remote-host 172.18.0.3
+  option remote-subvolume /data/glusterfs/store/dockerstore
+end-volume
+ 
+volume remote2
+  type protocol/client
+  option transport-type tcp
+  option remote-host 172.18.0.4
+  option remote-subvolume /data/glusterfs/store/dockerstore
+end-volume
+ 
+volume remote3
+  type protocol/client
+  option transport-type tcp
+  option remote-host 172.18.0.2
+  option remote-subvolume /data/glusterfs/store/dockerstore
+end-volume
+ 
+volume replicate
+  type cluster/replicate
+  subvolumes remote1 remote2 remote3
+end-volume
+ 
+volume writebehind
+  type performance/write-behind
+  option cache-size 1MB
+  subvolumes replicate
+end-volume
+ 
+volume cache
+  type performance/io-cache
+  option cache-size 512MB
+  subvolumes writebehind
+end-volume
