@@ -69,6 +69,8 @@ sqlite3 /mnt/testfile.db 'PRAGMA integrity_check'
 result=$(sqlite3 /mnt/testfile.db 'PRAGMA integrity_check')
 if [ "$result" = "ok" ] ; then
 	echo "yay, database checks out as ok!"
+	exit 0
 else
 	echo "uh oh, bad database!!!"
+	exit 1
 fi
