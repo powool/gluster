@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if \! mountpoint /mnt ; then
+mountpoint /mnt >& /dev/null
+if [ $? -ne 0 ] ; then
 	echo "If you haven't already, make sure you have this line in fstab:"
 	echo "/etc/glusterfs/dockerstore.vol /mnt glusterfs rw,noauto 0 0"
 	echo "and also have the file /etc/glusterfs/dockerstore.vol with the contents:"
@@ -37,6 +38,12 @@ fi
 
 echo "force test container to be nice and fresh."
 docker build -t sqlite_test_container .
+
+SERVER_VERSION=$(docker exec gluster_node-1_1 gluster --version | head -1)
+CLIENT_VERSION=$(docker run --rm sqlite_test_container glusterfs --version | head -1)
+
+echo "Gluster server version: $SERVER_VERSION"
+echo "Gluster client version: $CLIENT_VERSION"
 
 echo "Remove db and lock file:"
 sudo rm -rf /mnt/testfile.db /mnt/testfile.db.lock
